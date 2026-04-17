@@ -37,7 +37,7 @@ export default function SingleBlogPage() {
   return (
     <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: blog.bgColor }}>
       <nav className="p-4 border-b-2 border-black bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <button onClick={() => router.back()} className="flex items-center gap-2 font-black uppercase border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition text-xs">
+        <button onClick={() => router.back()} className="flex items-center gap-2 font-black uppercase border-2 border-black px-3 py-1 bg-black text-white transition text-xs">
           <ArrowLeft size={14}/> Back
         </button>
       </nav>
