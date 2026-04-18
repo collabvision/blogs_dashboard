@@ -23,11 +23,16 @@ export default function ProfessionalDashboard() {
 
 useEffect(() => {
   setMounted(true);
-  // Fetch from our new API instead of localStorage
-  fetch('/api/blogs')
-    .then(res => res.json())
-    .then(data => setBlogs(data))
-    .catch(err => console.error("Failed to load blogs:", err));
+  // Retrieve from LocalStorage instead of the API
+  const saved = localStorage.getItem('local_blogs');
+  if (saved) {
+    try {
+      setBlogs(JSON.parse(saved));
+    } catch (e) {
+      console.error("Failed to parse blogs from LocalStorage", e);
+      setBlogs([]);
+    }
+  }
 }, []);
   
   
@@ -46,19 +51,12 @@ useEffect(() => {
     ],
   };
 
-  const sync = async (list: any[]) => {
-    setBlogs(list); // Update UI immediately for speed
-    
-    try {
-      await fetch('/api/blogs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(list),
-      });
-    } catch (err) {
-      console.error("Failed to save to project folder:", err);
-    }
-  };
+const sync = (list: any[]) => {
+  setBlogs(list); // Update UI state
+  
+  // Save directly to the browser's LocalStorage
+  localStorage.setItem('local_blogs', JSON.stringify(list));
+};
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();

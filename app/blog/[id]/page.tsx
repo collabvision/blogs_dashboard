@@ -9,20 +9,15 @@ export default function SingleBlogPage() {
   const [blog, setBlog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Fetch from API instead of localStorage
-    fetch('/api/blogs', { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data) => {
-        // Find the blog that matches the ID from the URL
-        const found = data.find((b: any) => b.id === id);
-        setBlog(found);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load article:", err);
-        setLoading(false);
-      });
+useEffect(() => {
+    // Look in LocalStorage instead of API
+    const saved = localStorage.getItem('local_blogs');
+    if (saved) {
+      const data = JSON.parse(saved);
+      const found = data.find((b: any) => b.id === id);
+      setBlog(found);
+    }
+    setLoading(false);
   }, [id]);
 
   if (loading) return <div className="p-20 text-center font-black uppercase italic">Scanning Archives...</div>;
