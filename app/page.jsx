@@ -6,18 +6,17 @@ export default function HomePage() {
   const [blogs, setBlogs] = useState([]);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    
-    // 1. CHANGE THIS: Fetch from API instead of localStorage
-    fetch('/api/blogs')
-      .then((res) => res.json())
-      .then((data) => {
-        // Ensure data is an array before setting state
-        setBlogs(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => console.error("Failed to load blogs on home page:", err));
-  }, []);
+useEffect(() => {
+  setMounted(true);
+  
+  // Update this specific line:
+  fetch('/api/blogs', { cache: 'no-store' }) 
+    .then((res) => res.json())
+    .then((data) => {
+      setBlogs(Array.isArray(data) ? data : []);
+    })
+    .catch((err) => console.error("Fetch error:", err));
+}, []);
 
   if (!mounted) return null;
 
